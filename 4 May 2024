@@ -1,0 +1,37 @@
+class Solution
+{
+    public:
+     Node *solve(int in[],int post[],int in_start,int in_end,int post_start,int post_end){
+         
+         if(in_start>in_end)
+         return NULL;
+         if(in_start==in_end)
+         return new Node(in[in_start]);
+         
+         Node  *root=new Node(post[post_end]);
+         int index=-1;
+        
+           for(int i=in_start;i<=in_end;i++){
+               if(in[i]==post[post_end])
+               {
+                   index=i;
+                   break;
+               }
+           }
+           int left=index-in_start;
+           int right=in_end-index;
+           
+           root->left=solve(in,post,in_start,index-1,post_start,post_start+left-1);
+           root->right=solve(in,post,index+1,in_end,post_end-right,post_end-1);
+             
+             return root;
+     
+    
+     }
+
+    //Function to return a tree created from postorder and inoreder traversals.
+    Node *buildTree(int in[], int post[], int n) {
+        // Your code here
+        return solve(in,post,0,n-1,0,n-1);
+    }
+};
